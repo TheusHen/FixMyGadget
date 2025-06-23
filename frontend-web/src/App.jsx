@@ -12,7 +12,7 @@ export default function App() {
   async function fetchDiagnosis(form) {
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:4000/api/diagnosis", form);
+      const res = await axios.post("https://fixmygadget-backend.vercel.app/api/diagnosis", form);
       setResult(res.data);
       setLastForm(form);
     } catch (err) {
@@ -26,7 +26,7 @@ export default function App() {
     setLoading(true);
     try {
       // Request new video (extra parameter to force new video)
-      const res = await axios.post("http://localhost:4000/api/diagnosis", {
+      const res = await axios.post("https://fixmygadget-backend.vercel.app/api/diagnosis", {
         ...lastForm,
         _forceNewYoutube: true,
         _lastVideoId: result?.youtubeVideo?.videoId || undefined,
