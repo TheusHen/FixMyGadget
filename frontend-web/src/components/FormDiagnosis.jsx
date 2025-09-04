@@ -88,7 +88,7 @@ export default function FormDiagnosis({ onResult, loading }) {
                 disabled={loading}
             >
               <option value="" disabled hidden>
-                Select the type of gadget
+                Select your device type
               </option>
               {gadgets.map(g => (
                   <option value={g.value} key={g.value}>{g.label}</option>
@@ -101,7 +101,7 @@ export default function FormDiagnosis({ onResult, loading }) {
           <input
               type="text"
               value={brandInput}
-              placeholder={"Brand"}
+              placeholder={"Enter device brand (e.g., Apple, Samsung)"}
               onChange={handleBrandInput}
               autoComplete="off"
               disabled={!gadget || loading}
@@ -130,7 +130,7 @@ export default function FormDiagnosis({ onResult, loading }) {
           <input
               type="text"
               value={modelInput}
-              placeholder={"Model"}
+              placeholder={"Enter specific model (e.g., iPhone 15 Pro)"}
               onChange={handleModelInput}
               autoComplete="off"
               disabled={!brand || loading}
@@ -158,7 +158,7 @@ export default function FormDiagnosis({ onResult, loading }) {
         <div className="field-wrap">
           <textarea
               value={symptoms}
-              placeholder={"Describe the problem/symptoms"}
+              placeholder={"Describe the problem in detail (e.g., won't turn on, screen flickering, no sound)"}
               onChange={e => setSymptoms(e.target.value)}
               rows={3}
               required
@@ -178,7 +178,7 @@ export default function FormDiagnosis({ onResult, loading }) {
           ) : (
               <>
                 <FaCheckCircle style={{ marginRight: 8, verticalAlign: "middle" }} />
-                Diagnose
+                Get Diagnosis & Solution
               </>
           )}
         </motion.button>
