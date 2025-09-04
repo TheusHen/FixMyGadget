@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-    origin: "https://fixmygadget.theushen.me"
+    origin: ["https://fixmygadget.theushen.me", "http://localhost:5173", "http://localhost:3000"]
 }));
 app.use(express.json());
 
@@ -22,6 +22,12 @@ app.use("/api/tutorials", tutorialRoutes);
 
 app.use((req, res) => {
     res.status(404).json({ error: "Not found" });
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`FixMyGadget backend server running on port ${PORT}`);
 });
 
 export default app;

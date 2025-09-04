@@ -9,10 +9,12 @@ export default function App() {
   const [lastForm, setLastForm] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://fixmygadget-backend.vercel.app";
+
   async function fetchDiagnosis(form) {
     setLoading(true);
     try {
-      const res = await axios.post("https://fixmygadget-backend.vercel.app/api/diagnosis", form);
+      const res = await axios.post(`${API_BASE_URL}/api/diagnosis`, form);
       setResult(res.data);
       setLastForm(form);
     } catch (err) {
@@ -26,7 +28,7 @@ export default function App() {
     setLoading(true);
     try {
       // Request new video (extra parameter to force new video)
-      const res = await axios.post("https://fixmygadget-backend.vercel.app/api/diagnosis", {
+      const res = await axios.post(`${API_BASE_URL}/api/diagnosis`, {
         ...lastForm,
         _forceNewYoutube: true,
         _lastVideoId: result?.youtubeVideo?.videoId || undefined,
@@ -43,10 +45,10 @@ export default function App() {
         <div className="header animated-fadein">
           <h1>FixMyGadget <span className="logo-dot">.</span></h1>
           <span className="header-desc">
-          Quick diagnosis for gadgets: select the type, brand, model, and describe the symptom.
+          Get instant troubleshooting help for your devices: select device type, brand, model, and describe the issue.
         </span>
           <span className="lang-warning">
-          <strong>US English only. More languages coming soon!</strong>
+          <strong>Available in English. Supports 25+ device categories!</strong>
         </span>
         </div>
         <div className="flex-centered">
