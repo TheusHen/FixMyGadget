@@ -14,12 +14,11 @@ console.log('🚀 Starting FixMyGadget deployment...\n');
 function runCommand(command, cwd = __dirname) {
     console.log(`📝 Running: ${command}`);
     try {
-        const output = execSync(command, { 
+        execSync(command, { 
             cwd, 
             stdio: 'inherit',
             encoding: 'utf8' 
         });
-        return output;
     } catch (error) {
         console.error(`❌ Error executing: ${command}`);
         console.error(error.message);
@@ -30,12 +29,12 @@ function runCommand(command, cwd = __dirname) {
 // Step 1: Install and build frontend
 console.log('📦 Step 1: Installing frontend dependencies...');
 const frontendPath = join(__dirname, 'frontend-web');
-runCommand('npm install', frontendPath);
+runCommand('npm install --include=dev', frontendPath);
 
 console.log('🔨 Step 2: Building frontend...');
 runCommand('npm run build', frontendPath);
 
-// Step 2: Copy dist to backend
+// Step 3: Copy dist to backend
 console.log('📂 Step 3: Copying frontend build to backend...');
 const distPath = join(frontendPath, 'dist');
 const backendPath = join(__dirname, 'backend');
@@ -56,10 +55,11 @@ cpSync(indexSrc, indexDest);
 
 console.log('📁 Step 4: Installing backend dependencies...');
 process.env.PUPPETEER_SKIP_DOWNLOAD = 'true';
-runCommand('npm install', backendPath);
+runCommand('npm install --include=dev', backendPath);
+
+// Step 5: Start backend
+console.log('🚀 Step 5: Starting backend server...');
+runCommand('npm start', backendPath);
 
 console.log('✅ Deployment completed successfully!');
-console.log('\n🎯 To start the application:');
-console.log('   cd backend');
-console.log('   npm start');
-console.log('\n📖 The frontend will be served from the backend at http://localhost:3000');
+console.log('\n📖 The frontend is being served from the backend at http://localhost:3000');
