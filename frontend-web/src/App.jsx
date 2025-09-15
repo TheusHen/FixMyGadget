@@ -9,7 +9,10 @@ export default function App() {
   const [lastForm, setLastForm] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://fixmygadget-backend.vercel.app";
+  // When the frontend is served from the backend (port 3000), use relative paths
+  // When in development mode (port 5173), use environment variable or fallback to external API
+  const isServedFromBackend = window.location.port === '3000' || (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1');
+  const API_BASE_URL = isServedFromBackend ? '' : (import.meta.env.VITE_API_BASE_URL || "https://fixmygadget-backend.vercel.app");
 
   async function fetchDiagnosis(form) {
     setLoading(true);
