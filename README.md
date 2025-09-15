@@ -34,7 +34,9 @@ FixMyGadget is a comprehensive web application that helps users diagnose and fix
 - Node.js 16+ and npm
 - Git
 
-### Installation
+### Simple Single-Command Deployment
+
+FixMyGadget now features a unified deployment system that automatically builds the frontend and integrates it with the backend.
 
 1. **Clone the repository**
    ```bash
@@ -42,26 +44,52 @@ FixMyGadget is a comprehensive web application that helps users diagnose and fix
    cd FixMyGadget
    ```
 
-2. **Install Backend Dependencies**
+2. **Run the deployment script**
+   ```bash
+   node deploy.js
+   ```
+   
+   This script will:
+   - Install frontend dependencies
+   - Build the frontend into a dist folder
+   - Copy the built frontend to the backend
+   - Install backend dependencies
+   - Set up the integrated application
+
+3. **Start the application**
    ```bash
    cd backend
-   npm install
+   npm start
+   ```
+   
+   The application will be available at `http://localhost:3000` with:
+   - Frontend served from the root (`/`)
+   - API endpoints available at `/api/*`
+
+### Manual Development Setup (Optional)
+
+If you prefer to develop frontend and backend separately:
+
+1. **Install Backend Dependencies**
+   ```bash
+   cd backend
+   PUPPETEER_SKIP_DOWNLOAD=true npm install
    ```
 
-3. **Install Frontend Dependencies**
+2. **Install Frontend Dependencies**
    ```bash
    cd ../frontend-web
    npm install
    ```
 
-4. **Start the Backend Server**
+3. **Start the Backend Server**
    ```bash
    cd ../backend
    npm run dev
    ```
    The backend will start at `http://localhost:3000`
 
-5. **Start the Frontend Development Server**
+4. **Start the Frontend Development Server**
    ```bash
    cd ../frontend-web
    npm run dev
@@ -179,30 +207,74 @@ GET /api/tutorials?gadget=laptop&problem=laptop-power-issue
 
 ### Environment Variables
 
-Create `.env` files in both frontend and backend directories:
+The application supports both integrated and separate deployment modes.
 
-**Backend `.env`:**
+#### For Integrated Deployment (Recommended)
+
+Create a `.env` file in the `/backend` directory:
+
+```env
+PORT=3000
+NODE_ENV=production
+PUPPETEER_SKIP_DOWNLOAD=true
+```
+
+#### For Development Mode
+
+**Backend `.env` (in `/backend` directory):**
 ```env
 PORT=3000
 NODE_ENV=development
 PUPPETEER_SKIP_DOWNLOAD=true
 ```
 
-**Frontend `.env`:**
+**Frontend `.env` (in `/frontend-web` directory):**
 ```env
 VITE_API_BASE_URL=http://localhost:3000
 ```
 
+### API Configuration
+
+When using the integrated deployment:
+- Frontend automatically detects it's hosted from the same domain
+- API calls use relative paths (no CORS issues)
+- All traffic goes through the single backend server
+
+When developing separately:
+- Frontend uses `VITE_API_BASE_URL` for API calls
+- CORS is enabled in the backend for cross-origin requests
+
 ## 🚀 Deployment
 
-### Backend Deployment (Vercel)
+### Production Deployment
+
+The recommended approach is using the integrated deployment:
+
+```bash
+# 1. Clone and deploy
+git clone https://github.com/TheusHen/FixMyGadget.git
+cd FixMyGadget
+node deploy.js
+
+# 2. Start the production server
+cd backend
+npm start
+```
+
+The application will serve:
+- Frontend at `/` (root)
+- API endpoints at `/api/*`
+- Static assets at `/assets/*`
+
+### Legacy Separate Deployment
+
+#### Backend Deployment (Vercel)
 ```bash
 cd backend
-npm run build
 vercel --prod
 ```
 
-### Frontend Deployment (Vercel)
+#### Frontend Deployment (Vercel)
 ```bash
 cd frontend-web
 npm run build
